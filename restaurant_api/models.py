@@ -6,4 +6,4 @@ class Restaurant(models.Model):
     image = models.URLField()
     price = models.CharField(max_length=32)
     cuisine = models.CharField(max_length=100)
-    number = models.BigIntegerField()
+    number = models.CharField(max_length=12)
