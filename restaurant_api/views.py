@@ -15,3 +15,7 @@ class RestaurantDetail(generics.RetrieveUpdateDestroyAPIView):
 class ReviewList(generics.ListCreateAPIView):
     queryset = Review.objects.all().order_by('id')
     serializer_class = ReviewSerializer
+
+class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Restaurant.objects.all().order_by('id')
+    serializer_class = ReviewSerializer
