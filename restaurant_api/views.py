@@ -1,8 +1,8 @@
 from django.shortcuts import render
 
 from rest_framework import generics
-from .serializers import RestaurantSerializer
-from .models import Restaurant
+from .serializers import RestaurantSerializer, ReviewSerializer
+from .models import Restaurant, Review
 
 class RestaurantList(generics.ListCreateAPIView):
     queryset = Restaurant.objects.all().order_by('id') # tell django how to retrieve all objects from the DB, order by id ascending
@@ -17,5 +17,5 @@ class ReviewList(generics.ListCreateAPIView):
     serializer_class = ReviewSerializer
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Restaurant.objects.all().order_by('id')
+    queryset = Review.objects.all().order_by('id')
     serializer_class = ReviewSerializer
