@@ -6,8 +6,12 @@ class Restaurant(models.Model):
     image = models.URLField()
     price = models.CharField(max_length=32)
     cuisine = models.CharField(max_length=100)
-    number = models.CharField(max_length=12)
+    number = models.CharField(max_length=12, default=5552224445)
+
+    @property
+    def review_details(self):
+        return self.reviews.all()
 
 class Review(models.Model):
     comment = models.TextField()
-    restaurant = models.ForeignKey(Restaurant, related_name="restaurant", on_delete=models.CASCADE, null=True)
+    restaurant = models.ForeignKey(Restaurant, related_name="reviews", on_delete=models.CASCADE, null=True)
