@@ -14,4 +14,4 @@ class Restaurant(models.Model):
 
 class Review(models.Model):
     comment = models.TextField()
-    restaurant = models.ForeignKey(Restaurant, related_name="reviews", on_delete=models.CASCADE, null=True)
+    restaurant = models.ForeignKey(Restaurant, related_name="reviews", on_delete=models.CASCADE, blank=True)

@@ -24,44 +24,20 @@ class RestaurantSerializer(serializers.ModelSerializer): # serializers.ModelSeri
         # separate reviews info from all data and assign array to new var
         reviews_data = validated_data.pop('reviews')
         
-        # take updated restaurant info (**validated_data) and update existing Restaurant object and then assign it to restaurant var
-        # restaurant = Restaurant.objects.update(**validated_data)
-        
-        # update Restaurant instance
-        instance.name = validated_data.get('name', instance.name)
-        instance.address = validated_data.get('address', instance.address)
-        instance.image = validated_data.get('image', instance.image)
-        instance.price = validated_data.get('price', instance.price)
-        instance.cuisine = validated_data.get('cuisine', instance.cuisine)
-        instance.number = validated_data.get('number', instance.number)
-        instance.save()
+        # take updated restaurant info (**validated_data) and update existing Restaurant object inside db which is represented by instance
 
-        if reviews_data is not None:
-            # Update each Review instance
+        # update Restaurant object instance in db
+        if validated_data:
+            instance.name = validated_data.get('name', instance.name)
+            instance.address = validated_data.get('address', instance.address)
+            instance.image = validated_data.get('image', instance.image)
+            instance.price = validated_data.get('price', instance.price)
+            instance.cuisine = validated_data.get('cuisine', instance.cuisine)
+            instance.number = validated_data.get('number', instance.number)
+        
+        if reviews_data:
             for review_data in reviews_data:
-                review_id = review_data.get('id', None)
-                if review_id:
-                    review = instance.reviews.get(id=review_id)
-                    review.comment = review_data.get('comment', review.comment)
-                    review.restaurant = review_data.get('restaurant', review.restaurant)
-                    review.save()
-            # Create any new Review instances
-            # for review_data in reviews_data:
-            #     if not review_data.get('id', None):
-            #         Review.objects.create(restaurant=instance, **review_data)
-        
+                Review.objects.create(**review_data, restaurant=instance)
+            
+        instance.save()
         return instance
-        
-
-        # if reviews_data:
-        #     review_serializer = self.fields['reviews']
-        #     for review_data in reviews_data:
-        #         if Review.objects.filter(id=review_data.get('id')).exists():
-        #             review_instance = instance.reviews.get(id=review_data.get('id'))
-        #             review_instance = review_serializer.update(review_instance, review_data)
-        #         else:
-        #             pass
-        # return super().update(instance, validated_data)
-
-# Restaurant info gets updated
-# Reviews for under each restaurant do not get updated
